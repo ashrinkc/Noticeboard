@@ -70,10 +70,8 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
     setLogInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   return !isLogin ? (
-    <div className="flex flex-col items-center justify-center gap-16 h-screen bg-slate-300">
-      <h1 className="text-gray-600 text-4xl font-bold">
-        Register your account
-      </h1>
+    <div className="flex flex-col items-center justify-center gap-16 h-screen bg-slate-500">
+      <h1 className="text-white text-4xl font-bold">Register your account</h1>
       <div className="flex flex-col gap-6 shadow-2xl p-16 bg-white rounded-2xl">
         <input
           placeholder="Username"
@@ -105,7 +103,7 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
         />
         <button
           onClick={register}
-          className="bg-slate-300 p-1 text-sm  hover:text-slate-500 hover:bg-white rounded-md "
+          className="bg-slate-500 p-1 text-sm  hover:text-slate-500 hover:bg-white rounded-md "
         >
           Register
         </button>
@@ -118,8 +116,8 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
       </h6>
     </div>
   ) : (
-    <div className="flex flex-col items-center justify-center gap-16 h-screen bg-slate-300">
-      <h1 className="text-gray-600 text-4xl font-bold">Log In</h1>
+    <div className="flex flex-col items-center justify-center gap-16 h-screen bg-slate-500">
+      <h1 className="text-white text-4xl font-bold">Log In</h1>
       <div className="flex flex-col gap-6 shadow-xl p-16 bg-white rounded-2xl">
         <input
           placeholder="Username"
@@ -137,7 +135,7 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
         />
         <button
           onClick={login}
-          className="bg-slate-300 p-1 text-sm  hover:text-slate-500 hover:bg-white rounded-md "
+          className="bg-slate-500 p-1 text-sm  hover:text-slate-500 hover:bg-white rounded-md "
         >
           Login
         </button>

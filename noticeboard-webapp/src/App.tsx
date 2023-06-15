@@ -1,4 +1,9 @@
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  RouterProvider,
+} from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -7,6 +12,7 @@ import CreateClass from "./pages/CreateClass";
 import JoinClass from "./pages/JoinClass";
 
 function App() {
+  const user = localStorage.getItem("user");
   const Layout = () => {
     return (
       <>
@@ -15,10 +21,11 @@ function App() {
       </>
     );
   };
+
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout />,
+      element: user ? <Layout /> : <Navigate to="/login" replace />,
       children: [
         {
           path: "/",
@@ -40,7 +47,7 @@ function App() {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: !user ? <Login /> : <Navigate to="/" replace />,
     },
   ]);
 

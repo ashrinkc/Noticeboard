@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
   const [regInput, setRegInput] = useState({
@@ -51,6 +51,7 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
     }
   };
 
+  const navigate = useNavigate();
   //For user login
   const login = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -60,6 +61,11 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
         logInput
       );
       console.log(res.data);
+      await new Promise<void>((resolve) => {
+        localStorage.setItem("user", res.data.token);
+        resolve();
+      });
+      navigate("/");
     } catch (err) {
       console.log(err);
     }

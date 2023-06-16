@@ -3,13 +3,26 @@ import React, { useState } from "react";
 
 const JoinClass = () => {
   const [code, setCode] = useState("");
+  const user = localStorage.getItem("user");
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     console.log(code);
-    const res = await axios.post("http://localhost:8080/class/joinClass", {
-      code,
-    });
-    console.log(res.data);
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/class/joinClass",
+        {
+          code,
+        },
+        {
+          headers: {
+            authorization: "Bearer " + user,
+          },
+        }
+      );
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div

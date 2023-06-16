@@ -1,6 +1,7 @@
 import React from "react";
 
 export interface IData {
+  id: number;
   code: string;
   title: string;
   date: string;
@@ -8,7 +9,7 @@ export interface IData {
   color: string;
 }
 
-const NoticeContainer = ({ code, title, date, username, color }: IData) => {
+const NoticeContainer = ({ id, code, title, date, username, color }: IData) => {
   return (
     <div className="flex flex-col w-96 h-64 bg-white ">
       <div className={`h-[30%] p-2`} style={{ backgroundColor: `${color}` }}>

@@ -61,10 +61,8 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
         logInput
       );
       console.log(res.data);
-      await new Promise<void>((resolve) => {
-        localStorage.setItem("user", res.data.token);
-        resolve();
-      });
+      localStorage.setItem("user", res.data.token);
+
       navigate("/");
     } catch (err) {
       console.log(err);

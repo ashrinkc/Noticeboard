@@ -18,7 +18,6 @@ function verifyToken(
   try {
     jwt.verify(token, "secretkey", (err, decoded) => {
       if (err) return res.status(403).json("Token is not valid");
-      console.log(decoded);
       req.user = decoded;
       next();
     });

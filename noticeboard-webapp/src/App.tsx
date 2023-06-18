@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import CreateClass from "./pages/CreateClass";
 import JoinClass from "./pages/JoinClass";
+import Notices from "./pages/Notices";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -30,6 +31,10 @@ function App() {
         {
           path: "/",
           element: <Home />,
+        },
+        {
+          path: "/n/:id",
+          element: <Notices />,
         },
         {
           path: "/create",

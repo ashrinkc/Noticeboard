@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export interface IData {
   id: number;
@@ -10,27 +11,38 @@ export interface IData {
 }
 
 const NoticeContainer = ({ id, code, title, date, username, color }: IData) => {
+  const noticeClass = {
+    id,
+    code,
+    title,
+    date,
+    username,
+    color,
+  };
+  const navigate = useNavigate();
   return (
-    <div className="flex flex-col w-96 h-64 bg-white ">
-      <div className={`h-[30%] p-2`} style={{ backgroundColor: `${color}` }}>
-        <h1 className="truncate font-bold">
-          {code}-{title.toUpperCase()}
-        </h1>
-        <h5 className=" font-serif font-semibold text-sm">
-          {date.slice(0, 10)}
-        </h5>
-        <h5 className=" font-serif font-semibold text-sm">
-          {username.toUpperCase()}
-        </h5>
+    <Link to={`/n/${id}`} state={noticeClass}>
+      <div className="flex flex-col w-96 h-64 bg-white ">
+        <div className={`h-[30%] p-2`} style={{ backgroundColor: `${color}` }}>
+          <h1 className="truncate font-bold">
+            {code}-{title.toUpperCase()}
+          </h1>
+          <h5 className=" font-serif font-semibold text-sm">
+            {date.slice(0, 10)}
+          </h5>
+          <h5 className=" font-serif font-semibold text-sm">
+            {username.toUpperCase()}
+          </h5>
+        </div>
+        <div className="h-[50%] border-2"></div>
+        <div className="h-[20%] border-t-4 border-2 flex items-center justify-end pr-2 ">
+          <img
+            className="w-5 hover:cursor-pointer"
+            src="https://cdn-icons-png.flaticon.com/512/3405/3405244.png"
+          />
+        </div>
       </div>
-      <div className="h-[50%] border-2"></div>
-      <div className="h-[20%] border-t-4 border-2 flex items-center justify-end pr-2 ">
-        <img
-          className="w-5 hover:cursor-pointer"
-          src="https://cdn-icons-png.flaticon.com/512/3405/3405244.png"
-        />
-      </div>
-    </div>
+    </Link>
   );
 };
 

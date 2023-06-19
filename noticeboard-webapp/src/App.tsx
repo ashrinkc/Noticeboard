@@ -11,9 +11,12 @@ import Navbar from "./components/Navbar";
 import CreateClass from "./pages/CreateClass";
 import JoinClass from "./pages/JoinClass";
 import Notices from "./pages/Notices";
+import { useContext } from "react";
+import AuthContext from "./context/AuthContext";
 
 function App() {
   const user = localStorage.getItem("user");
+  const { currentUser } = useContext(AuthContext);
   const Layout = () => {
     return (
       <>
@@ -26,7 +29,8 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: user ? <Layout /> : <Navigate to="/login" replace />,
+      element:
+        currentUser || user ? <Layout /> : <Navigate to="/login" replace />,
       children: [
         {
           path: "/",

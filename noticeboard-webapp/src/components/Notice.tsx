@@ -15,7 +15,7 @@ const Notice = ({ username, date, notice }: INotice) => {
         />
         <div>
           <h5>{username}</h5>
-          <h6>{date}</h6>
+          <h6>{date.slice(0, 10)}</h6>
         </div>
       </div>
       <div>{notice}</div>

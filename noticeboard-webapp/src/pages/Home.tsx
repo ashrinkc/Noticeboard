@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NoticeContainer, { IData } from "../components/NoticeContainer";
 import axios from "axios";
+import AuthContext from "../context/AuthContext";
 
 const Home = () => {
   const user = localStorage.getItem("user");
@@ -56,6 +57,8 @@ const Home = () => {
       color: "green",
     },
   ];
+  const { currentUser } = useContext(AuthContext);
+  console.log(currentUser);
   return (
     <div className="px-9 py-10 flex flex-wrap gap-10">
       {classData.map((items: IData) => (

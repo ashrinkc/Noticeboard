@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
   const [regInput, setRegInput] = useState({
@@ -52,6 +53,7 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
   };
 
   const navigate = useNavigate();
+  const { setCurrentUser } = useContext(AuthContext);
   //For user login
   const login = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -60,7 +62,7 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
         "http://localhost:8080/user/login",
         logInput
       );
-      console.log(res.data);
+      setCurrentUser(res.data.others);
       localStorage.setItem("user", res.data.token);
 
       navigate("/");

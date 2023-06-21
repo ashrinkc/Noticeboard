@@ -13,6 +13,7 @@ import JoinClass from "./pages/JoinClass";
 import Notices from "./pages/Notices";
 import { useContext } from "react";
 import AuthContext from "./context/AuthContext";
+import Profile from "./pages/Profile";
 
 function App() {
   const user = localStorage.getItem("user");
@@ -47,6 +48,10 @@ function App() {
         {
           path: "/join",
           element: <JoinClass />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
         },
       ],
     },

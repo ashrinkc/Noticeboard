@@ -3,6 +3,8 @@ import { db } from "../config/dbconnection";
 import bcrypt from "bcrypt";
 import { QueryError, QueryOptions } from "mysql2";
 import jwt from "jsonwebtoken";
+import { CustomRequest } from "../middlewares/verifyToken";
+import { json } from "stream/consumers";
 export const register = (req: express.Request, res: express.Response) => {
   try {
     //CHECKING EXISTING USER
@@ -64,6 +66,45 @@ export const login = (req: express.Request, res: express.Response) => {
       const token = jwt.sign({ id: data[0].id }, "secretkey");
       const { password, ...others } = data[0];
       res.status(200).json({ others, token });
+    });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+};
+
+type IPassword = {
+  password: string;
+};
+
+export const updatePassword = (req: CustomRequest, res: express.Response) => {
+  try {
+    const q1 = "SELECT password FROM users WHERE `id` = ?";
+    const queryOptions: QueryOptions = {
+      sql: q1,
+      values: [req.user.id],
+    };
+    db.query(queryOptions, (err: QueryError, data: IPassword[]) => {
+      if (err) return res.status(400).json(err);
+
+      const hashedPassword = data[0].password;
+      const isMatch = bcrypt.compareSync(req.body.oldPassword, hashedPassword);
+      if (!isMatch) {
+        return res.status(400).json("Incorrect old password");
+      }
+      //HASH THE PASSWORD
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(req.body.newPassword, salt);
+      const q = "UPDATE users SET `password`=? WHERE `id`=?";
+      const queryOptions: QueryOptions = {
+        sql: q,
+        values: [hash, req.user.id],
+      };
+      db.query(queryOptions, (err: QueryError, data: []) => {
+        if (err) return res.status(400).json(err);
+
+        return res.status(200).json("OK");
+      });
     });
   } catch (err) {
     console.log(err);

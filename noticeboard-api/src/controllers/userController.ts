@@ -5,6 +5,7 @@ import { QueryError, QueryOptions } from "mysql2";
 import jwt from "jsonwebtoken";
 import { CustomRequest } from "../middlewares/verifyToken";
 import { json } from "stream/consumers";
+import cloudinary from "../helpers/cloudinary";
 export const register = (req: express.Request, res: express.Response) => {
   try {
     //CHECKING EXISTING USER
@@ -109,5 +110,30 @@ export const updatePassword = (req: CustomRequest, res: express.Response) => {
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
+  }
+};
+
+export const uploadImage = async (
+  req: CustomRequest,
+  res: express.Response
+) => {
+  try {
+    const result = await cloudinary.uploader.upload(req.body.profilePic, {
+      folder: "products",
+    });
+    console.log(result);
+    const q = "UPDATE users SET profilePic=? WHERE id=?";
+    const queryOptions: QueryOptions = {
+      sql: q,
+      values: [result.secure_url, req.user.id],
+    };
+    db.query(queryOptions, (err: QueryError, data: []) => {
+      if (err) return res.status(400).json(err);
+
+      return res.status(200).json("Image added successfully");
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
   }
 };

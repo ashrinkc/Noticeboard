@@ -97,13 +97,13 @@ export const joinClass = (req: CustomRequest, res: express.Response) => {
 export const getJoinedClass = (req: CustomRequest, res: express.Response) => {
   try {
     const q1 =
-      "SELECT c.code, c.color, c.date, c.title, c.id, u.username FROM class c JOIN users u ON u.id = c.creatorId WHERE c.creatorId = ?";
+      "SELECT c.code, c.color, c.date, c.title, c.id, u.username,c.creatorId FROM class c JOIN users u ON u.id = c.creatorId WHERE c.creatorId = ?";
     const queryOptions1: QueryOptions = {
       sql: q1,
       values: [req.user.id],
     };
     const q2 =
-      "SELECT c.code, c.color, c.date, c.title, c.id, u.username FROM class c JOIN users u ON c.creatorId = u.id JOIN userclass uc ON c.id = uc.classID WHERE uc.userID = ?";
+      "SELECT c.code, c.color, c.date, c.title, c.id, u.username, uc.userId FROM class c JOIN users u ON c.creatorId = u.id JOIN userclass uc ON c.id = uc.classID WHERE uc.userID = ?";
 
     const queryOptions2: QueryOptions = {
       sql: q2,

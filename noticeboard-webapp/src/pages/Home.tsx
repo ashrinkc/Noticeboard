@@ -26,6 +26,7 @@ const Home = () => {
             authorization: "Bearer " + user,
           },
         });
+        console.log(res.data);
         setClassData(res.data);
       } catch (err) {
         console.log(err);
@@ -69,6 +70,8 @@ const Home = () => {
           title={items.title}
           date={items.date}
           color={items.color}
+          creatorId={items?.creatorId}
+          userId={items?.userId}
         />
       ))}
     </div>

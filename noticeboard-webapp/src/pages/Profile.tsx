@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Box, Modal } from "@mui/material";
@@ -59,6 +59,72 @@ const Profile = () => {
       console.log(err);
     }
   };
+
+  const [profilePic, setProfilePic] = useState<File | Blob | null | any>(null);
+
+  useEffect(() => {
+    if (profilePic) {
+      sendImageToBackend(profilePic);
+    }
+  }, [profilePic]);
+
+  const sendImageToBackend = async (profilePic: string) => {
+    try {
+      console.log(profilePic);
+      const res = await axios.post(
+        `http://localhost:8080/user/img`,
+        {
+          profilePic,
+        },
+        {
+          headers: {
+            authorization: "Bearer " + user,
+          },
+        }
+      );
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setFiletoBase(file);
+    }
+  };
+
+  const setFiletoBase = (file: File | Blob | null | any) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setProfilePic(reader.result);
+      };
+    }
+  };
+  const upload = async () => {
+    console.log(profilePic);
+    try {
+      if (profilePic) {
+        setFiletoBase(profilePic);
+        console.log(profilePic);
+        const res = await axios.post(
+          "http://localhost:8080/user/img",
+          { profilePic },
+          {
+            headers: {
+              authorization: "Bearer " + user,
+            },
+          }
+        );
+        console.log(res.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="py-10 flex flex-col justify-center items-center">
       <h2 className=" font-semibold font-serif text-3xl self-center">
@@ -71,7 +137,12 @@ const Profile = () => {
             src="https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg"
             onClick={handleImageUpload}
           />
-          <input ref={inputFileRef} style={{ display: "none" }} type="file" />
+          <input
+            onChange={onImageChange}
+            ref={inputFileRef}
+            style={{ display: "none" }}
+            type="file"
+          />
         </div>
         <div className="flex flex-col justify-between">
           <div className="flex flex-col gap-2">

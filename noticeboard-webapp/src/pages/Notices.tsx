@@ -72,6 +72,7 @@ const Notices = () => {
       const res = await axios.get(
         `http://localhost:8080/notice/getNotice/${classId}`
       );
+      console.log(res.data);
       setGetNotice(res.data);
     };
     getNotice();
@@ -133,6 +134,9 @@ const Notices = () => {
                 username={item.username}
                 notice={item.notice}
                 date={item.date}
+                id={item.id}
+                creatorId={item.creatorId}
+                noticeId={item.noticeId}
               />
             ))}
           </div>

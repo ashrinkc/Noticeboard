@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/material";
 import { Link } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -18,6 +19,7 @@ const Navbar = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { currentUser } = useContext(AuthContext);
   return (
     <div className="flex justify-between px-8 py-2 h-15 border-b-4">
       <div className="flex gap-5 justify-center items-center">
@@ -39,7 +41,11 @@ const Navbar = () => {
         <Link to="/profile">
           <img
             className="w-10 rounded-3xl"
-            src="https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg"
+            src={
+              currentUser?.profilePic
+                ? currentUser.profilePic
+                : "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg"
+            }
           />
         </Link>
       </div>

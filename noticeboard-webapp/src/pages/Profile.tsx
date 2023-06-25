@@ -29,7 +29,9 @@ const Profile = () => {
     localStorage.setItem("user", "");
     setCurrentUser(null);
     navigate("/");
+    window.location.reload();
   };
+
   const handleImageUpload = () => {
     inputFileRef.current?.click();
   };
@@ -125,6 +127,7 @@ const Profile = () => {
       console.log(err);
     }
   };
+
   return (
     <div className="py-10 flex flex-col justify-center items-center">
       <h2 className=" font-semibold font-serif text-3xl self-center">
@@ -134,7 +137,11 @@ const Profile = () => {
         <div>
           <img
             className=" h-64 cursor-pointer"
-            src="https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg"
+            src={
+              currentUser?.profilePic
+                ? currentUser.profilePic
+                : "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg"
+            }
             onClick={handleImageUpload}
           />
           <input

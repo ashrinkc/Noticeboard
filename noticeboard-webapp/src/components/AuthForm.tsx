@@ -76,8 +76,8 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
     setLogInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   return !isLogin ? (
-    <div className="flex flex-col items-center justify-center gap-16 h-screen bg-slate-500">
-      <h1 className="text-white text-4xl font-bold">Register your account</h1>
+    <div className="flex flex-col items-center justify-center gap-16 h-screen bg-gray-50">
+      <h1 className=" text-4xl font-bold font-serif">Register your account</h1>
       <div className="flex flex-col gap-6 shadow-2xl p-16 bg-white rounded-2xl">
         <input
           placeholder="Username"
@@ -97,34 +97,36 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
           placeholder="Password"
           name="password"
           className="border-b-2 border-gray-300 p-1"
+          type="password"
           value={regInput.password}
           onChange={regHandleChange}
         />
         <input
           placeholder="Confirm Password"
           className="border-b-2 border-gray-300 p-1"
+          type="password"
           value={regInput.confirmPassword}
           name="confirmPassword"
           onChange={regHandleChange}
         />
         <button
           onClick={register}
-          className="bg-slate-500 p-1 text-sm  hover:text-slate-500 hover:bg-white rounded-md "
+          className="bg-blue-500 text-white p-1 font-serif text-sm  hover:text-blue-500 hover:bg-white rounded-md "
         >
           Register
         </button>
         <div>
-          <small className="font-thin">Sign up with google</small>
+          <small className="font-thin font-serif">Sign up with google</small>
         </div>
       </div>
-      <h6 className="font-bold text-sm">
+      <h6 className="font-bold text-sm font-serif">
         Already have an account? <Link to={"/login"}>Login</Link>
       </h6>
     </div>
   ) : (
-    <div className="flex flex-col items-center justify-center gap-16 h-screen bg-slate-500">
-      <h1 className="text-white text-4xl font-bold">Log In</h1>
-      <div className="flex flex-col gap-6 shadow-xl p-16 bg-white rounded-2xl">
+    <div className="flex flex-col items-center justify-center gap-16 h-screen bg-gray-50">
+      <h1 className=" text-4xl font-bold font-serif">Log In</h1>
+      <div className="flex flex-col gap-6 shadow-2xl p-16 bg-white rounded-2xl">
         <input
           placeholder="Username"
           className="border-b-2 border-gray-300 p-1"
@@ -136,20 +138,21 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
           placeholder="Password"
           className="border-b-2 border-gray-300 p-1"
           name="password"
+          type="password"
           value={logInput.password}
           onChange={handleLogChange}
         />
         <button
           onClick={login}
-          className="bg-slate-500 p-1 text-sm  hover:text-slate-500 hover:bg-white rounded-md "
+          className="bg-blue-500 text-white font-serif p-1 text-sm  hover:text-blue-500 hover:bg-white rounded-md "
         >
           Login
         </button>
         <div>
-          <small className="font-thin">Sign in with google</small>
+          <small className="font-thin font-serif">Sign in with google</small>
         </div>
       </div>
-      <h6 className="font-bold text-sm">
+      <h6 className="font-bold text-sm font-serif">
         Dont have an account?<Link to={"/register"}>Register</Link>
       </h6>
     </div>

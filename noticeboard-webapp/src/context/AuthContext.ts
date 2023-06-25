@@ -5,6 +5,7 @@ export interface IUser {
   username: string;
   email: string;
   userType: string;
+  profilePic?: string;
 }
 
 interface AuthContextType {

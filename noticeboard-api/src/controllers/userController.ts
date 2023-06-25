@@ -121,14 +121,16 @@ export const uploadImage = async (
     const result = await cloudinary.uploader.upload(req.body.profilePic, {
       folder: "products",
     });
-    console.log(result);
     const q = "UPDATE users SET profilePic=? WHERE id=?";
     const queryOptions: QueryOptions = {
       sql: q,
       values: [result.secure_url, req.user.id],
     };
     db.query(queryOptions, (err: QueryError, data: []) => {
-      if (err) return res.status(400).json(err);
+      if (err) {
+        console.log(err);
+        return res.status(400).json(err);
+      }
 
       return res.status(200).json("Image added successfully");
     });

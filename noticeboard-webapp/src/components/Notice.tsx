@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import AuthContext from "../context/AuthContext";
 import axios from "axios";
+import DoneOutlineOutlinedIcon from "@mui/icons-material/DoneOutlineOutlined";
 
 export interface INotice {
   username: string;
@@ -48,9 +49,10 @@ const Notice = ({
           <h6>{date.slice(0, 10)}</h6>
         </div>
       </div>
+
       <div>{notice}</div>
+
       <div className="flex justify-end">
-        {" "}
         {(id === currentUser?.id || currentUser?.id === creatorId) && (
           <img
             className="w-5 hover:cursor-pointer"

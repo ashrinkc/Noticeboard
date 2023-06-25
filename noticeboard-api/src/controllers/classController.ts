@@ -155,3 +155,56 @@ export const getUsersJoined = (req: express.Request, res: express.Response) => {
     res.sendStatus(500);
   }
 };
+
+type ICreator = {
+  creatorId: number;
+};
+
+export const deleteClass = (req: CustomRequest, res: express.Response) => {
+  try {
+    const q = "SELECT creatorId FROM class WHERE id = ?";
+    const queryOptions: QueryOptions = {
+      sql: q,
+      values: [req.params.id],
+    };
+    db.query(queryOptions, (err: QueryError, data: ICreator[]) => {
+      if (err) return res.status(400).json(err);
+
+      if (data[0].creatorId !== req.user.id) {
+        return res.status(403).json("Unauthorized");
+      }
+
+      const q = "DELETE FROM class WHERE id = ?";
+      const queryOptions: QueryOptions = {
+        sql: q,
+        values: [req.params.id],
+      };
+      db.query(queryOptions, (err: QueryError, data: []) => {
+        if (err) return res.status(400).json(err);
+
+        return res.status(200).json("Class deleted successfully");
+      });
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const unjoinClass = (req: CustomRequest, res: express.Response) => {
+  try {
+    const q = "DELETE FROM userclass WHERE classId=? AND userId=?";
+    const queryOptions: QueryOptions = {
+      sql: q,
+      values: [req.params.id, req.user.id],
+    };
+    db.query(queryOptions, (err: QueryError, data: []) => {
+      if (err) return res.status(500).json(err);
+
+      return res.status(200).json("Unjoined successfully");
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};

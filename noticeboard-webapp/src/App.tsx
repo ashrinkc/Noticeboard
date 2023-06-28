@@ -14,6 +14,7 @@ import Notices from "./pages/Notices";
 import { useContext } from "react";
 import AuthContext from "./context/AuthContext";
 import Profile from "./pages/Profile";
+import GoogleLogin from "./components/GoogleLogin";
 
 function App() {
   const user = localStorage.getItem("user");

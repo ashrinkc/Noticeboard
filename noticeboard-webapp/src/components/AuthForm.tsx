@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
+import GoogleLogin from "./GoogleLogin";
 
 const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
   const [regInput, setRegInput] = useState({
@@ -116,7 +117,10 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
           Register
         </button>
         <div>
-          <small className="font-thin font-serif">Sign up with google</small>
+          <small className="font-thin font-serif">
+            {/* <Link to={"/gRegister"}>Sign up with google</Link> */}
+            <GoogleLogin type="Reg" />
+          </small>
         </div>
       </div>
       <h6 className="font-bold text-sm font-serif">
@@ -149,7 +153,9 @@ const AuthForm = ({ isLogin }: { isLogin?: boolean }) => {
           Login
         </button>
         <div>
-          <small className="font-thin font-serif">Sign in with google</small>
+          <small className="font-thin font-serif">
+            <GoogleLogin type="Log" />
+          </small>
         </div>
       </div>
       <h6 className="font-bold text-sm font-serif">

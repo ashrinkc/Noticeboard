@@ -31,7 +31,7 @@ export const createNotice = (req: CustomRequest, res: express.Response) => {
 export const getNotice = (req: express.Request, res: express.Response) => {
   try {
     const q =
-      "SELECT n.id as noticeId, u.id,n.date, n.notice, u.username, c.creatorId from classnotice n JOIN users u ON n.userId = u.id JOIN class c ON n.classId = c.id  WHERE n.classId = ?";
+      "SELECT n.id as noticeId, u.id,n.date, n.notice, u.username, c.creatorId from classnotice n JOIN users u ON n.userId = u.id JOIN class c ON n.classId = c.id  WHERE n.classId = ? ORDER BY n.date DESC";
     const queryOptions: QueryOptions = {
       sql: q,
       values: [req.params.id],

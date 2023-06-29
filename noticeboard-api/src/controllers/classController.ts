@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { CustomRequest } from "../middlewares/verifyToken";
 import { db } from "../config/dbconnection";
 import { QueryError, QueryOptions } from "mysql2";
+import { IEmail, sendMailToAllUser } from "../helpers/cron";
 
 export const addClass = (req: CustomRequest, res: express.Response) => {
   try {
@@ -202,6 +203,28 @@ export const unjoinClass = (req: CustomRequest, res: express.Response) => {
       if (err) return res.status(500).json(err);
 
       return res.status(200).json("Unjoined successfully");
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const sendMailToClassUsers = (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const q =
+      "SELECT u.email FROM users u JOIN userclass uc ON uc.userID = u.id WHERE uc.classID = ?";
+    const queryOptions: QueryOptions = {
+      sql: q,
+      values: [req.params.id],
+    };
+    db.query(queryOptions, (err: QueryError, data: IEmail[]) => {
+      if (err) return res.status(400).json(err);
+
+      sendMailToAllUser({ data, text: req.body.text });
     });
   } catch (err) {
     console.log(err);

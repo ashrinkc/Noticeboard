@@ -7,6 +7,7 @@ import {
   getJoinedClass,
   getUsersJoined,
   joinClass,
+  sendMailToClassUsers,
   unjoinClass,
 } from "../controllers/classController";
 const router = express.Router();
@@ -18,4 +19,5 @@ router.get("/joinedClass", verifyToken, getJoinedClass);
 router.get("/classUser/:id", getUsersJoined);
 router.delete("/deleteClass/:id", verifyToken, deleteClass);
 router.delete("/unjoinClass/:id", verifyToken, unjoinClass);
+router.post("/sendMail/:id", sendMailToClassUsers);
 export default router;

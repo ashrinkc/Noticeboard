@@ -62,10 +62,15 @@ const Notices = () => {
       );
       console.log(res.data);
       setNotice("");
+      const mail = await axios.post(
+        `http://localhost:8080/class/sendMail/${classId}`,
+        { text: notice }
+      );
     } catch (err) {
       console.log(err);
     }
   };
+
   const [getNotice, setGetNotice] = useState([]);
   useEffect(() => {
     const getNotice = async () => {

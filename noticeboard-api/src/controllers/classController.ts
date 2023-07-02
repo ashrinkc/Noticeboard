@@ -4,6 +4,7 @@ import { CustomRequest } from "../middlewares/verifyToken";
 import { db } from "../config/dbconnection";
 import { QueryError, QueryOptions } from "mysql2";
 import { IEmail, sendMailToAllUser } from "../helpers/cron";
+import { redis } from "../helpers/redis";
 
 export const addClass = (req: CustomRequest, res: express.Response) => {
   try {
@@ -27,7 +28,7 @@ export const addClass = (req: CustomRequest, res: express.Response) => {
   }
 };
 
-export const getClass = (req: CustomRequest, res: express.Response) => {
+export const getClass = async (req: CustomRequest, res: express.Response) => {
   try {
     const q =
       "SELECT c.code, c.color, c.date, c.title, c.id, u.username FROM class c JOIN users u ON u.id = c.creatorId WHERE c.creatorId = ?";
@@ -95,8 +96,16 @@ export const joinClass = (req: CustomRequest, res: express.Response) => {
 //   }
 // };
 
-export const getJoinedClass = (req: CustomRequest, res: express.Response) => {
+export const getJoinedClass = async (
+  req: CustomRequest,
+  res: express.Response
+) => {
   try {
+    const cacheKey = `class:${req.user.id}`;
+    const cashedValue = await redis.get(cacheKey);
+    if (cashedValue) {
+      return res.status(200).json(JSON.parse(cashedValue));
+    }
     const q1 =
       "SELECT c.code, c.color, c.date, c.title, c.id, u.username,c.creatorId FROM class c JOIN users u ON u.id = c.creatorId WHERE c.creatorId = ?";
     const queryOptions1: QueryOptions = {
@@ -113,10 +122,11 @@ export const getJoinedClass = (req: CustomRequest, res: express.Response) => {
     db.query(queryOptions1, (err: QueryError, data1: []) => {
       if (err) return res.status(400).json(err);
 
-      db.query(queryOptions2, (err: QueryError, data2: []) => {
+      db.query(queryOptions2, async (err: QueryError, data2: []) => {
         if (err) return res.status(400).json(err);
 
         const combinedData = [...data1, ...data2];
+        await redis.set(cacheKey, JSON.stringify(combinedData));
         return res.status(200).json(combinedData);
       });
     });

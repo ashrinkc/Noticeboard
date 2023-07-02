@@ -16,7 +16,7 @@ const Home = () => {
             authorization: "Bearer " + user,
           },
         });
-        console.log(res.data);
+
         setClassData(res.data);
         setTotalPosts(res.data.length);
       } catch (err) {
@@ -32,6 +32,7 @@ const Home = () => {
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = classData.slice(firstPostIndex, lastPostIndex);
+
   return (
     <div
       className="flex flex-col p-10"
@@ -40,6 +41,7 @@ const Home = () => {
       <div className=" flex flex-wrap gap-12 mb-4">
         {currentPosts.map((items: IData) => (
           <NoticeContainer
+            key={items.id}
             id={items.id}
             code={items.code}
             username={items.username}

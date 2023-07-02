@@ -109,8 +109,8 @@ const Notices = () => {
         <div className="w-[20%] shadow-2xl p-5 border border-gray-400 rounded-xl">
           <h3>Users:</h3>
           <div>
-            {users.map((item: IUser) => (
-              <Users username={item.username} />
+            {users.map((item: IUser, index: number) => (
+              <Users key={index} username={item.username} />
             ))}
           </div>
         </div>
@@ -136,6 +136,7 @@ const Notices = () => {
           <div className="flex flex-col gap-8">
             {getNotice.map((item: INotice) => (
               <Notice
+                key={`${item.id}-${item.noticeId}`}
                 username={item.username}
                 notice={item.notice}
                 date={item.date}

@@ -61,20 +61,34 @@ export const getNotice = async (
   }
 };
 
+interface IDelId {
+  classId: number;
+}
+
 export const deleteNotice = async (
   req: express.Request,
   res: express.Response
 ) => {
   try {
-    const q = "DELETE FROM classnotice WHERE id = ?";
+    const q = "SELECT classId FROM classnotice WHERE id = ?";
     const queryOptions: QueryOptions = {
       sql: q,
       values: [req.params.id],
     };
-    db.query(queryOptions, async (err: QueryError, data: []) => {
-      if (err) return res.status(500).send(err);
+    db.query(queryOptions, async (err: QueryError, data: IDelId[]) => {
+      // Remove the corresponding Redis cache for the class
+      const cacheKey = `notice:${data[0].classId}`;
+      await redis.del(cacheKey);
+      const q = "DELETE FROM classnotice WHERE id = ?";
+      const queryOptions: QueryOptions = {
+        sql: q,
+        values: [req.params.id],
+      };
+      db.query(queryOptions, async (err: QueryError, data: []) => {
+        if (err) return res.status(500).send(err);
 
-      return res.status(200).json("Notice successfully deleted");
+        return res.status(200).json("Notice successfully deleted");
+      });
     });
   } catch (err) {
     console.log(err);

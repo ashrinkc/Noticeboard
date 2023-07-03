@@ -17,9 +17,11 @@ export const addClass = (req: CustomRequest, res: express.Response) => {
       req.user.id,
       req.body.code,
     ];
-    db.query(q, [values], (err, data) => {
+    db.query(q, [values], async (err, data) => {
       if (err) return res.status(500).json(err);
 
+      const cacheKey = `class:${req.user.id}`;
+      await redis.del(cacheKey);
       return res.status(200).json("Class has been created");
     });
   } catch (err) {
@@ -68,33 +70,15 @@ export const joinClass = (req: CustomRequest, res: express.Response) => {
       values: [req.user.id, classid],
     };
 
-    db.query(queryOptions, (err: QueryError, data: object[]) => {
+    db.query(queryOptions, async (err: QueryError, data: object[]) => {
       if (err) return res.status(400).json(err);
 
+      const cacheKey = `class:${req.user.id}`;
+      await redis.del(cacheKey);
       return res.status(200).json("Class successfully joined");
     });
   });
 };
-
-// export const getJoinedClass = (req: CustomRequest, res: express.Response) => {
-//   try {
-//     const q =
-//       "SELECT c.code, c.color, c.date, c.title, c.id, u.username FROM class c JOIN users u ON c.creatorId = u.id JOIN userclass uc ON c.id = uc.classID WHERE uc.userID = ?";
-
-//     const queryOptions: QueryOptions = {
-//       sql: q,
-//       values: [req.user.id],
-//     };
-//     db.query(queryOptions, (err: QueryError, data: []) => {
-//       if (err) return res.status(400).json(err);
-
-//       return res.status(200).json(data);
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     return res.sendStatus(500);
-//   }
-// };
 
 export const getJoinedClass = async (
   req: CustomRequest,
@@ -190,9 +174,11 @@ export const deleteClass = (req: CustomRequest, res: express.Response) => {
         sql: q,
         values: [req.params.id],
       };
-      db.query(queryOptions, (err: QueryError, data: []) => {
+      db.query(queryOptions, async (err: QueryError, data: []) => {
         if (err) return res.status(400).json(err);
 
+        const cacheKey = `class:${req.user.id}`;
+        await redis.del(cacheKey);
         return res.status(200).json("Class deleted successfully");
       });
     });
@@ -209,9 +195,11 @@ export const unjoinClass = (req: CustomRequest, res: express.Response) => {
       sql: q,
       values: [req.params.id, req.user.id],
     };
-    db.query(queryOptions, (err: QueryError, data: []) => {
+    db.query(queryOptions, async (err: QueryError, data: []) => {
       if (err) return res.status(500).json(err);
 
+      const cacheKey = `class:${req.user.id}`;
+      await redis.del(cacheKey);
       return res.status(200).json("Unjoined successfully");
     });
   } catch (err) {
